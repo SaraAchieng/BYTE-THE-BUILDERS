@@ -8,7 +8,7 @@ metadata = MetaData()
 db = SQLAlchemy(metadata=metadata)
 
 # define a model class by inheriting from db.Model.
-class Client:
+class Client(db.Model):
     __tablename__ = 'clients'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -18,3 +18,5 @@ class Client:
     
 
     
+    def __repr__(self):
+        return f'<Client {self.id}, {self.name}, {self.email}, {self.phone_number}>'

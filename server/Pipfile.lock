@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a723ac948fed965d3d3ff325356828f043fa65844be6a452d950a011df78d7f3"
+            "sha256": "20ea7d438ad4514e6c0af6f707350ce398995e42e2a8d7989a0aedcc227cf4ed"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "alembic": {
+            "hashes": [
+                "sha256:203503117415561e203aa14541740643a611f641517f0209fcae63e9fa09f1a2",
+                "sha256:908e905976d15235fae59c9ac42c4c5b75cfcefe3d27c0fbf7ae15a37715d80e"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==1.13.3"
+        },
         "blinker": {
             "hashes": [
                 "sha256:1779309f71bf239144b9399d06ae925637cf6634cf6bd131104184531bf67c01",
@@ -39,6 +47,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==3.0.3"
+        },
+        "flask-migrate": {
+            "hashes": [
+                "sha256:5c532be17e7b43a223b7500d620edae33795df27c75811ddf32560f7d48ec617",
+                "sha256:dff7dd25113c210b069af280ea713b883f3840c1e3455274745d7355778c8622"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.6'",
+            "version": "==4.0.7"
         },
         "flask-sqlalchemy": {
             "hashes": [
@@ -133,8 +150,16 @@
                 "sha256:45e54197d28b7a7f1559e60b95e7c567032b602131fbd588f1497f47880aa68b",
                 "sha256:71522656f0abace1d072b9e5481a48f07c138e00f079c38c8f883823f9c26bd7"
             ],
-            "markers": "python_version < '3.10'",
+            "markers": "python_version < '3.9'",
             "version": "==8.5.0"
+        },
+        "importlib-resources": {
+            "hashes": [
+                "sha256:980862a1d16c9e147a59603677fa2aa5fd82b87f223b6cb870695bcfce830065",
+                "sha256:ac29d5f956f01d5e4bb63102a5a19957f1b9175e45649977264a1416783bb717"
+            ],
+            "markers": "python_version < '3.9'",
+            "version": "==6.4.5"
         },
         "itsdangerous": {
             "hashes": [
@@ -151,6 +176,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==3.1.4"
+        },
+        "mako": {
+            "hashes": [
+                "sha256:260f1dbc3a519453a9c856dedfe4beb4e50bd5a26d96386cb6c80856556bb91a",
+                "sha256:48dbc20568c1d276a2698b36d968fa76161bf127194907ea6fc594fa81f943bc"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==1.3.5"
         },
         "markupsafe": {
             "hashes": [
