@@ -22,3 +22,13 @@
     margin: 0 1rem;
   }
   
+  .navbar-links a {
+    color: #fff;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  
+  .navbar-links a:hover {
+    color: #FFD700; /* Bright yellow for hover effect */
+  }
+  
