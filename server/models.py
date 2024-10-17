@@ -76,11 +76,11 @@ class Equipment(db.Model):
     __tablename__ = 'equipment'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # e.g., Crane, Bulldozer
+    name = db.Column(db.String(100), nullable=False)  
     purchase_date = db.Column(db.Date, nullable=False)
     cost = db.Column(db.Float, nullable=False)
-    maintenance_date = db.Column(db.Date, nullable=True)  # Last maintenance date
-    status = db.Column(db.String(50), nullable=False)  # e.g., 'In Use', 'Under Maintenance'
+    maintenance_date = db.Column(db.Date, nullable=True)  
+    status = db.Column(db.String(50), nullable=False)  
 
     def __repr__(self):
         return f"Equipment('{self.name}', '{self.cost}', '{self.status}')"
