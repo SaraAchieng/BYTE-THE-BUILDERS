@@ -1,10 +1,10 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Login from './components/Login';
 import Register from './components/Register';
-import Dashboard from './components/Dashboard';
+import Home from './components/Home'; // The Home component will include all new features
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css'; // Keep your styles
 
@@ -18,10 +18,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
-              path="/dashboard"
-              element={<ProtectedRoute component={Dashboard} />}
+              path="/home"
+              element={<ProtectedRoute component={Home} />}
             />
-            <Route path="/" element={<Login />} /> {/* Default route */}
+            <Route path="/" element={<Navigate to="/login" />} /> {/* Default route */}
           </Routes>
         </header>
       </div>

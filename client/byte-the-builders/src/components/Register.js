@@ -1,8 +1,11 @@
+// src/components/Register.js
 import React, { useState } from 'react';
-import './Register.css';
+import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,6 +14,11 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle registration logic here
+    const isRegistered = true; // Replace with actual registration logic
+    if (isRegistered) {
+      localStorage.setItem('token', 'yourToken'); // Set the token in localStorage
+      navigate('/home'); // Redirect to home page after registration
+    }
   };
 
   return (
