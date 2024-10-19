@@ -157,32 +157,93 @@
 }
 
 
-/* src/components/ProjectSlider.css */
-.project-slider {
-  display: flex;
-  overflow-x: auto;
-}
-
+/*ProjectDetails.js*/
 .project-card {
-  margin: 0 1rem;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 1rem;
   text-align: center;
-}
-
-.project-card img {
-  max-width: 100%;
-  height: auto;
   border-radius: 8px;
 }
 
-.project-card button {
-  margin-top: 1rem;
-  background-color: #FFA500;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.project-image {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
 }
+
+.project-details {
+  text-align: left;
+  margin: 2rem;
+}
+
+.project-image-large {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+
+
+/* src/components/ProjectSlider.css */
+.project-slider-wrapper {
+  overflow: hidden; /* Hide overflowing content */
+  width: 100%; /* Set the width of the container */
+  position: relative;
+  height: 600px; /* Adjust height according to your project cards */
+}
+
+.project-slider {
+  display: flex;
+  animation: slide 70s linear infinite; /* Animation for the slider */
+}
+
+.project-card {
+  min-width: 300px; /* Ensure each project takes up equal space */
+  margin-right: 20px; /* Spacing between cards */
+  text-align: center;
+  background-color: rgb(0, 0, 0);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.project-image {
+  width: 100%;
+  height: 200px; /* Ensure consistent height for images */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.details-btn {
+  background-color: #007bff; /* Button color */
+  color: white; /* Button text color */
+  border: none; /* No border */
+  padding: 10px; /* Button padding */
+  margin-top: 10px; /* Space above button */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  font-size: 1rem; /* Button font size */
+}
+
+.details-btn:hover {
+  background-color: #0056b3; /* Darker color on hover */
+}
+
+/* Sliding animation */
+@keyframes slide {
+  0% {
+    transform: translateX(100%); /* Start off-screen to the right */
+  }
+  100% {
+    transform: translateX(-100%); /* End off-screen to the left */
+  }
+}
+
+
+
+
 
 
 .register-container {
