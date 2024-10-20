@@ -71,7 +71,8 @@ function Employees() {
   const [employees, setEmployees] = useState([]);
   const [employeeData, setEmployeeData] = useState({
     id: '',
-    name: '',
+    first_name: '',
+    last_name:'',
     role: '',
     email: '',
     phone: '',
@@ -90,7 +91,7 @@ function Employees() {
   // Add a new employee
   function addEmployee() {
     setEmployees([...employees, employeeData]);
-    setEmployeeData({ id: '', name: '', role: '', email: '', phone: '', hire_date: '', salary: '' });
+    setEmployeeData({ id: '', first_name: '', last_name: '', role: '', email: '', phone: '', hire_date: '', salary: '' });
   }
 
   // Delete an employee
@@ -112,7 +113,7 @@ function Employees() {
       employee.id === currentEmployeeId ? { ...employee, ...employeeData } : employee
     ));
     setIsUpdating(false); // Exit update mode
-    setEmployeeData({ id: '', name: '', role: '', email: '', phone: '', hire_date: '', salary: '' }); // Clear form
+    setEmployeeData({  id: '', first_name: '', last_name: '', role: '', email: '', phone: '', hire_date: '', salary: '' }); // Clear form
   }
 
   return (
@@ -129,9 +130,16 @@ function Employees() {
       />
       <input
         type="text"
-        name="name"
-        placeholder="Name"
-        value={employeeData.name}
+        name="first_name"
+        placeholder="First Name"
+        value={employeeData.first_name}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="last_name"
+        placeholder="Last Name"
+        value={employeeData.last_name}
         onChange={handleChange}
       />
       <input
@@ -181,7 +189,8 @@ function Employees() {
       <ul>
         {employees.map(employee => (
           <li key={employee.id}>
-            <strong>Name:</strong> {employee.name} <br />
+            <strong>First Name:</strong> {employee.first_name} <br />
+            <strong>Last Name:</strong> {employee.last_name} <br />
             <strong>Role:</strong> {employee.role} <br />
             <strong>Email:</strong> {employee.email} <br />
             <strong>Phone:</strong> {employee.phone} <br />
