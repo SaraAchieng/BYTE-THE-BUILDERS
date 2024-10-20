@@ -1,84 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-
-// function Clients() {
-//   const [clients, setClients] = useState([]);
-//   const [newClient, setNewClient] = useState('');
-//   const [editClient, setEditClient] = useState(null);
-
-//   useEffect(() => {
-//     fetch('/api/clients')
-//       .then((res) => res.json())
-//       .then((data) => setClients(data));
-//   }, []);
-
-//   function addClient() {
-//     const client = { name: newClient };
-//     fetch('/api/clients', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(client),
-//     }).then((res) => res.json()).then((newClient) => {
-//       setClients([...clients, newClient]);
-//       setNewClient('');
-//     });
-//   }
-
-//   function deleteClient(id) {
-//     fetch(/api/clients/${id}, { method: 'DELETE' }).then(() => {
-//       setClients(clients.filter((client) => client.id !== id));
-//     });
-//   }
-
-//   function updateClient(id) {
-//     const updatedClient = { name: editClient };
-//     fetch(/api/clients/${id}, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(updatedClient),
-//     }).then((res) => res.json()).then((updated) => {
-//       setClients(clients.map((client) => (client.id === id ? updated : client)));
-//       setEditClient(null);
-//     });
-//   }
-
-//   return (
-//     <div>
-//       <h2>Clients</h2>
-//       <ul>
-//         {clients.map((client) => (
-//           <li key={client.id}>
-//             {editClient === client.id ? (
-//               <input
-//                 type="text"
-//                 value={editClient.name}
-//                 onChange={(e) => setEditClient(e.target.value)}
-//               />
-//             ) : (
-//               <span>{client.name}</span>
-//             )}
-//             <button className="edit" onClick={() => updateClient(client.id)}>Edit</button>
-//             <button className="delete" onClick={() => deleteClient(client.id)}>Delete</button>
-//           </li>
-//         ))}
-//       </ul>
-//       <input
-//         type="text"
-//         value={newClient}
-//         onChange={(e) => setNewClient(e.target.value)}
-//       />
-//       <button onClick={addClient}>Add Client</button>
-//     </div>
-//   );
-// }
-
-// export default Clients;
-
-// src/Clients.js
-// src/Clients.js
 import React, { useState } from 'react';
 
 function Clients() {
@@ -90,6 +9,8 @@ function Clients() {
     email: '',
     phone: '',
   });
+  const [isUpdating, setIsUpdating] = useState(false); // Track if update mode is on
+  const [currentClientId, setCurrentClientId] = useState(null); // Track the client being updated
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -106,23 +27,76 @@ function Clients() {
   }
 
   function updateClient(id) {
-    // Implement update logic here
+    const client = clients.find(client => client.id === id);
+    setClientData(client); // Pre-fill the form with the client's data
+    setIsUpdating(true); // Enable update mode
+    setCurrentClientId(id); // Set the client being updated
+  }
+
+  function handleUpdate() {
+    setClients(clients.map(client =>
+      client.id === currentClientId ? { ...client, ...clientData } : client
+    ));
+    setIsUpdating(false); // Turn off update mode
+    setClientData({ name: '', id: '', companyName: '', email: '', phone: '' }); // Clear form
   }
 
   return (
     <div>
-      <h2>Clients</h2>
-      <input type="text" name="name" value={clientData.name} onChange={handleChange} placeholder="Client Name" />
-      <input type="text" name="id" value={clientData.id} onChange={handleChange} placeholder="Client ID" />
-      <input type="text" name="companyName" value={clientData.companyName} onChange={handleChange} placeholder="Company Name" />
-      <input type="email" name="email" value={clientData.email} onChange={handleChange} placeholder="Email" />
-      <input type="text" name="phone" value={clientData.phone} onChange={handleChange} placeholder="Phone Number" />
-      <button onClick={addClient}>Add Client</button>
+      {/* Form for adding or updating clients */}
+      <h2>{isUpdating ? "Update Client" : "Add Client"}</h2>
+      <input
+        type="text"
+        name="name"
+        placeholder="Name"
+        value={clientData.name}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="id"
+        placeholder="ID"
+        value={clientData.id}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="companyName"
+        placeholder="Company Name"
+        value={clientData.companyName}
+        onChange={handleChange}
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={clientData.email}
+        onChange={handleChange}
+      />
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone"
+        value={clientData.phone}
+        onChange={handleChange}
+      />
       
+      {/* Conditionally render the 'Add' or 'OK' button */}
+      {isUpdating ? (
+        <button onClick={handleUpdate}>OK</button> // OK button for updating
+      ) : (
+        <button onClick={addClient}>Add Client</button> // Add Client button
+      )}
+
+      {/* List of clients */}
       <ul>
         {clients.map(client => (
           <li key={client.id}>
-            {client.name} - {client.companyName}
+            <strong>Name:</strong> {client.name} <br />
+            <strong>ID:</strong> {client.id} <br />
+            <strong>Company:</strong> {client.companyName} <br />
+            <strong>Email:</strong> {client.email} <br />
+            <strong>Phone:</strong> {client.phone} <br />
             <button onClick={() => deleteClient(client.id)}>Delete</button>
             <button onClick={() => updateClient(client.id)}>Update</button>
           </li>
