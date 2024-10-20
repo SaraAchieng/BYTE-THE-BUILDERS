@@ -1,44 +1,89 @@
-.App {
+/* Shared Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+nav {
+  margin: 10px 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  margin-top: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 22px); /* Full width minus padding */
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background: white;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: rgba(237, 154, 0, 0.958);
 }
 
-.App-link {
-  color: #61dafb;
+li button {
+  background-color: #dc3545;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+li button:hover {
+  background-color: #c82333;
 }
 
+/* Additional Styles from Kent Branch */
 
-/* src/components/Footer.css */
+/* Footer */
 .footer {
   background-color: #333;
   color: white;
@@ -56,8 +101,7 @@
   color: #FFA500;
 }
 
-
-/* src/components/Home.css */
+/* Home */
 .home-page {
   padding: 2rem;
 }
@@ -71,8 +115,7 @@
   text-align: center;
 }
 
-
-/* src/components/Login.css */
+/* Login */
 .login-container {
   width: 100%;
   max-width: 400px;
@@ -121,7 +164,7 @@
   background-color: #FFD700;
 }
 
-
+/* Navbar */
 .navbar {
   background-color: #333;
   padding: 1rem 2rem;
@@ -131,7 +174,7 @@
 }
 
 .navbar-logo a {
-  color: #FFA500; /* Bright construction orange */
+  color: #FFA500;
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;
@@ -153,11 +196,10 @@
 }
 
 .navbar-links a:hover {
-  color: #FFD700; /* Bright yellow for hover effect */
+  color: #FFD700;
 }
 
-
-/*ProjectDetails.js*/
+/* Project Details */
 .project-card {
   border: 1px solid #ddd;
   padding: 1rem;
@@ -184,24 +226,22 @@
   margin-bottom: 1rem;
 }
 
-
-
-/* src/components/ProjectSlider.css */
+/* Project Slider */
 .project-slider-wrapper {
-  overflow: hidden; /* Hide overflowing content */
-  width: 100%; /* Set the width of the container */
+  overflow: hidden;
+  width: 100%;
   position: relative;
-  height: 600px; /* Adjust height according to your project cards */
+  height: 600px;
 }
 
 .project-slider {
   display: flex;
-  animation: slide 70s linear infinite; /* Animation for the slider */
+  animation: slide 70s linear infinite;
 }
 
 .project-card {
-  min-width: 300px; /* Ensure each project takes up equal space */
-  margin-right: 20px; /* Spacing between cards */
+  min-width: 300px;
+  margin-right: 20px;
   text-align: center;
   background-color: rgb(0, 0, 0);
   border: 1px solid #ccc;
@@ -211,41 +251,37 @@
 
 .project-image {
   width: 100%;
-  height: 200px; /* Ensure consistent height for images */
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .details-btn {
-  background-color: #007bff; /* Button color */
-  color: white; /* Button text color */
-  border: none; /* No border */
-  padding: 10px; /* Button padding */
-  margin-top: 10px; /* Space above button */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer on hover */
-  font-size: 1rem; /* Button font size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .details-btn:hover {
-  background-color: #0056b3; /* Darker color on hover */
+  background-color: #0056b3;
 }
 
-/* Sliding animation */
+/* Sliding Animation */
 @keyframes slide {
   0% {
-    transform: translateX(100%); /* Start off-screen to the right */
+    transform: translateX(100%);
   }
   100% {
-    transform: translateX(-100%); /* End off-screen to the left */
+    transform: translateX(-100%);
   }
 }
 
-
-
-
-
-
+/* Register */
 .register-container {
   width: 100%;
   max-width: 400px;
@@ -292,10 +328,9 @@
 
 .register-btn:hover {
   background-color: #FFD700;
-}  
+}
 
-
-/* src/components/SearchBar.css */
+/* Search Bar */
 .search-bar-container {
   display: flex;
   justify-content: center;
