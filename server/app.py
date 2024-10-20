@@ -1,24 +1,36 @@
-import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-# Initialize the SQLAlchemy object
-db = SQLAlchemy()
+from flask import Flask, jsonify
+from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
+from config import Config
+from db import db
+import routes
 
 def create_app():
-    # Create a Flask application instance
     app = Flask(__name__)
-
-    # Configuration for the database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'  # Use SQLite for simplicity
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'supersecretkey'
-
-    # Initialize the database with the app
+    app.config.from_object(Config)
     db.init_app(app)
+    jwt = JWTManager(app)
+    migrate = Migrate(app, db)
 
-    # Create all tables within the app context
+    # Define a route for the root URL
+    @app.route('/')
+    def home():
+        return jsonify(message="Hello, World!")
+
+    # Create all tables within the application context
     with app.app_context():
-        db.create_all()  # Create all tables
+        db.create_all()  
+
+        # Register the routes with the app instance
+        routes.register_routes(app)
+
+        # Print all registered routes for debugging
+        print("Registered routes:")
+        for rule in app.url_map.iter_rules():
+            print(rule)
 
     return app
+
+if __name__ == "__main__":
+    app = create_app()
+    app.run(host='0.0.0.0', port=5000, debug=True)

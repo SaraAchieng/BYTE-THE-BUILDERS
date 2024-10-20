@@ -1,4 +1,4 @@
-from app import db
+from db import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -7,6 +7,8 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
+    phone_number = db.Column(db.String(15))
 
     def __repr__(self):
         return f"User('{self.name}', '{self.email}')"
@@ -19,7 +21,7 @@ class Client(db.Model):
     contact_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(15), nullable=False)
-    address = db.Column(db.String(255), nullable=True)
+    address = db.Column(db.String(255), nullable=True)  # Added 'address' column
 
     projects = db.relationship('Project', backref='client')
 
@@ -64,10 +66,11 @@ class Material(db.Model):
     __tablename__ = 'materials'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # e.g., Cement, Steel
-    unit_price = db.Column(db.Float, nullable=False)  # Price per unit (e.g., per kg or per cubic meter)
-    quantity = db.Column(db.Float, nullable=False)  # Quantity in stock or used in a project
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))  # Material assigned to a project
+    name = db.Column(db.String(100), nullable=False) 
+    unit = db.Column(db.String(50), nullable=False) 
+    unit_price = db.Column(db.Float, nullable=False)  
+    quantity = db.Column(db.Float, nullable=False)  
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))  
 
     def __repr__(self):
         return f"Material('{self.name}', '{self.unit_price}', '{self.quantity}')"
@@ -76,11 +79,14 @@ class Equipment(db.Model):
     __tablename__ = 'equipment'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  
-    purchase_date = db.Column(db.Date, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)  # Added 'quantity' column
     cost = db.Column(db.Float, nullable=False)
-    maintenance_date = db.Column(db.Date, nullable=True)  
-    status = db.Column(db.String(50), nullable=False)  
+    rental_price = db.Column(db.Float, nullable=True)  # Can be NULL
+    purchase_date = db.Column(db.Date, nullable=False)
+    maintenance_date = db.Column(db.Date, nullable=True)  # Can be NULL
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
+    status = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return f"Equipment('{self.name}', '{self.cost}', '{self.status}')"
