@@ -270,69 +270,69 @@ def register_routes(app):
         db.session.commit()
         return jsonify({'message': 'Equipment deleted successfully!'}), 200
 
-#     # Client Routes
-# @app.route('/clients', methods=['GET'])
-# def get_clients():
-#     clients = Client.query.all()
-#     return jsonify([{
-#         'id': client.id,
-#         'name': client.name,
-#         'email': client.email,
-#         'phone_number': client.phone_number
-#     } for client in clients]), 200
+    # # Client Routes
+    # @app.route('/clients', methods=['GET'])
+    # def get_clients():
+    #     clients = Client.query.all()
+    #     return jsonify([{
+    #         'id': client.id,
+    #         'name': client.name,
+    #         'email': client.email,
+    #         'phone_number': client.phone_number
+    #     } for client in clients]), 200
 
-# @app.route('/clients', methods=['POST'])
-# def create_client():
-#     data = request.get_json()
-#     required_fields = ['name', 'email', 'phone_number']
-#     if not all(field in data for field in required_fields):
-#         return jsonify({'error': 'Missing fields'}), 400
+    # @app.route('/clients', methods=['POST'])
+    # def create_client():
+    #     data = request.get_json()
+    #     required_fields = ['name', 'email', 'phone_number']
+    #     if not all(field in data for field in required_fields):
+    #         return jsonify({'error': 'Missing fields'}), 400
 
-#     new_client = Client(
-#         name=data['name'],
-#         email=data['email'],
-#         phone_number=data['phone_number']
-#     )
-#     db.session.add(new_client)
-#     db.session.commit()
-#     return jsonify({'message': 'Client created successfully!'}), 201
+    #     new_client = Client(
+    #         name=data['name'],
+    #         email=data['email'],
+    #         phone_number=data['phone_number']
+    #     )
+    #     db.session.add(new_client)
+    #     db.session.commit()
+    #     return jsonify({'message': 'Client created successfully!'}), 201
 
-# @app.route('/clients/<int:client_id>', methods=['GET'])
-# def get_client(client_id):
-#     client = Client.query.get(client_id)
-#     if client:
-#         return jsonify({
-#             'id': client.id,
-#             'name': client.name,
-#             'email': client.email,
-#             'phone_number': client.phone_number
-#         }), 200
-#     else:
-#         return jsonify({'error': 'Client not found'}), 404
+    # @app.route('/clients/<int:client_id>', methods=['GET'])
+    # def get_client(client_id):
+    #     client = Client.query.get(client_id)
+    #     if client:
+    #         return jsonify({
+    #             'id': client.id,
+    #             'name': client.name,
+    #             'email': client.email,
+    #             'phone_number': client.phone_number
+    #         }), 200
+    #     else:
+    #         return jsonify({'error': 'Client not found'}), 404
 
-# @app.route('/clients/<int:client_id>', methods=['PATCH'])
-# def update_client(client_id):
-#     client = Client.query.get(client_id)
-#     if not client:
-#         return jsonify({'error': 'Client not found'}), 404
+    # @app.route('/clients/<int:client_id>', methods=['PATCH'])
+    # def update_client(client_id):
+    #     client = Client.query.get(client_id)
+    #     if not client:
+    #         return jsonify({'error': 'Client not found'}), 404
 
-#     data = request.get_json()
-#     for field in ['name', 'email', 'phone_number']:
-#         if field in data:
-#             setattr(client, field, data[field])
+    #     data = request.get_json()
+    #     for field in ['name', 'email', 'phone_number']:
+    #         if field in data:
+    #             setattr(client, field, data[field])
 
-#     db.session.commit()
-#     return jsonify({'message': 'Client updated successfully!'}), 200
+    #     db.session.commit()
+    #     return jsonify({'message': 'Client updated successfully!'}), 200
 
-# @app.route('/clients/<int:client_id>', methods=['DELETE'])
-# def delete_client(client_id):
-#     client = Client.query.get(client_id)
-#     if not client:
-#         return jsonify({'error': 'Client not found'}), 404
+    # @app.route('/clients/<int:client_id>', methods=['DELETE'])
+    # def delete_client(client_id):
+    #     client = Client.query.get(client_id)
+    #     if not client:
+    #         return jsonify({'error': 'Client not found'}), 404
 
-#     db.session.delete(client)
-#     db.session.commit()
-#     return jsonify({'message': 'Client deleted successfully!'}), 200
+    #     db.session.delete(client)
+    #     db.session.commit()
+    #     return jsonify({'message': 'Client deleted successfully!'}), 200
 
 
 
