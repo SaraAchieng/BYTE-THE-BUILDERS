@@ -136,9 +136,9 @@ const ProjectSlider = () => {
               <button className="details-btn">Details</button>
             </Link>
             {/* View More button linking to external site */}
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
+            {/* <a href={project.link} target="_blank" rel="noopener noreferrer">
               <button className="view-btn">View More</button>
-            </a>
+            </a> */}
           </div>
         ))}
       </div>
