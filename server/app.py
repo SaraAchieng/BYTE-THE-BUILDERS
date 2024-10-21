@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask_cors import CORS  # Import CORS
 from config import Config
 from db import db
 import routes
@@ -8,6 +9,10 @@ import routes
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    # Initialize CORS
+    CORS(app)  # Enable CORS for all routes
+
     db.init_app(app)
     jwt = JWTManager(app)
     migrate = Migrate(app, db)
@@ -31,6 +36,7 @@ def create_app():
 
     return app
 
+# This part ensures the app factory is callable
 if __name__ == "__main__":
     app = create_app()
     app.run(host='0.0.0.0', port=5000, debug=True)
