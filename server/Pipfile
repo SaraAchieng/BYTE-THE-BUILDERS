@@ -11,6 +11,7 @@ pyjwt = "*"
 werkzeug = "*"
 faker = "*"
 flask-jwt-extended = "*"
+flask-cors = "*"
 
 [dev-packages]
 
