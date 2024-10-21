@@ -1,24 +1,36 @@
-
-from flask import Flask
+from flask import Flask, jsonify
+from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from config import Config
+from db import db
+import routes
 
-from models import db, Client
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    db.init_app(app)
+    jwt = JWTManager(app)
+    migrate = Migrate(app, db)
 
-# create a Flask application object
-app = Flask(__name__)
+    # Define a route for the root URL
+    @app.route('/')
+    def home():
+        return jsonify(message="Hello, World!")
 
-# configure a database connection to the local file app.db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    # Create all tables within the application context
+    with app.app_context():
+        db.create_all()  
 
-# disable modification tracking to use less memory
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        # Register the routes with the app instance
+        routes.register_routes(app)
 
-# create a Migrate object to manage schema modifications
-migrate = Migrate(app, db)
+        # Print all registered routes for debugging
+        print("Registered routes:")
+        for rule in app.url_map.iter_rules():
+            print(rule)
 
-# initialize the Flask application to use the database
-db.init_app(app)
+    return app
 
-
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+if __name__ == "__main__":
+    app = create_app()
+    app.run(host='0.0.0.0', port=5000, debug=True)
