@@ -206,7 +206,7 @@ def register_routes(app):
         db.session.commit()
         return jsonify({'message': 'Material deleted successfully!'}), 200
 
-    # Equipment Routes
+   # Equipment Routes
     @app.route('/equipments', methods=['GET'])
     def get_equipments():
         equipments = Equipment.query.all()
@@ -214,20 +214,30 @@ def register_routes(app):
             'id': equipment.id,
             'name': equipment.name,
             'quantity': equipment.quantity,
-            'unit_price': equipment.unit_price
+            'cost': equipment.cost,
+            'rental_price': equipment.rental_price,
+            'purchase_date': equipment.purchase_date.isoformat() if equipment.purchase_date else None,
+            'maintenance_date': equipment.maintenance_date.isoformat() if equipment.maintenance_date else None,
+            'project_id': equipment.project_id,
+            'status': equipment.status
         } for equipment in equipments]), 200
 
     @app.route('/equipments', methods=['POST'])
     def create_equipment():
         data = request.get_json()
-        required_fields = ['name', 'quantity', 'unit_price']
+        required_fields = ['name', 'quantity', 'cost', 'purchase_date', 'status']
         if not all(field in data for field in required_fields):
             return jsonify({'error': 'Missing fields'}), 400
 
         new_equipment = Equipment(
             name=data['name'],
             quantity=data['quantity'],
-            unit_price=data['unit_price']
+            cost=data['cost'],
+            rental_price=data.get('rental_price'),  # Optional
+            purchase_date=data['purchase_date'],  # Ensure this is in the correct format
+            maintenance_date=data.get('maintenance_date'),  # Optional
+            project_id=data['project_id'],  # Ensure this is provided
+            status=data['status']
         )
         db.session.add(new_equipment)
         db.session.commit()
@@ -241,7 +251,12 @@ def register_routes(app):
                 'id': equipment.id,
                 'name': equipment.name,
                 'quantity': equipment.quantity,
-                'unit_price': equipment.unit_price
+                'cost': equipment.cost,
+                'rental_price': equipment.rental_price,
+                'purchase_date': equipment.purchase_date.isoformat() if equipment.purchase_date else None,
+                'maintenance_date': equipment.maintenance_date.isoformat() if equipment.maintenance_date else None,
+                'project_id': equipment.project_id,
+                'status': equipment.status
             }), 200
         else:
             return jsonify({'error': 'Equipment not found'}), 404
@@ -253,7 +268,7 @@ def register_routes(app):
             return jsonify({'error': 'Equipment not found'}), 404
 
         data = request.get_json()
-        for field in ['name', 'quantity', 'unit_price']:
+        for field in ['name', 'quantity', 'cost', 'rental_price', 'maintenance_date', 'status']:
             if field in data:
                 setattr(equipment, field, data[field])
 
@@ -270,69 +285,159 @@ def register_routes(app):
         db.session.commit()
         return jsonify({'message': 'Equipment deleted successfully!'}), 200
 
-#     # Client Routes
-# @app.route('/clients', methods=['GET'])
-# def get_clients():
-#     clients = Client.query.all()
-#     return jsonify([{
-#         'id': client.id,
-#         'name': client.name,
-#         'email': client.email,
-#         'phone_number': client.phone_number
-#     } for client in clients]), 200
 
-# @app.route('/clients', methods=['POST'])
-# def create_client():
-#     data = request.get_json()
-#     required_fields = ['name', 'email', 'phone_number']
-#     if not all(field in data for field in required_fields):
-#         return jsonify({'error': 'Missing fields'}), 400
 
-#     new_client = Client(
-#         name=data['name'],
-#         email=data['email'],
-#         phone_number=data['phone_number']
-#     )
-#     db.session.add(new_client)
-#     db.session.commit()
-#     return jsonify({'message': 'Client created successfully!'}), 201
 
-# @app.route('/clients/<int:client_id>', methods=['GET'])
-# def get_client(client_id):
-#     client = Client.query.get(client_id)
-#     if client:
-#         return jsonify({
-#             'id': client.id,
-#             'name': client.name,
-#             'email': client.email,
-#             'phone_number': client.phone_number
-#         }), 200
-#     else:
-#         return jsonify({'error': 'Client not found'}), 404
+    # Client Routes
+    @app.route('/clients', methods=['GET'])
+    def get_clients():
+        clients = Client.query.all()
+        return jsonify([{
+            'id': client.id,
+            'company_name': client.company_name,
+            'contact_name': client.contact_name,
+            'email': client.email,
+            'phone_number': client.phone_number,
+            'address': client.address
+        } for client in clients]), 200
 
-# @app.route('/clients/<int:client_id>', methods=['PATCH'])
-# def update_client(client_id):
-#     client = Client.query.get(client_id)
-#     if not client:
-#         return jsonify({'error': 'Client not found'}), 404
+    @app.route('/clients', methods=['POST'])
+    def create_client():
+        data = request.get_json()
+        required_fields = ['company_name', 'contact_name', 'email', 'phone_number']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': 'Missing fields'}), 400
 
-#     data = request.get_json()
-#     for field in ['name', 'email', 'phone_number']:
-#         if field in data:
-#             setattr(client, field, data[field])
+        new_client = Client(
+            company_name=data['company_name'],
+            contact_name=data['contact_name'],
+            email=data['email'],
+            phone_number=data['phone_number'],
+            address=data.get('address')  # Address is optional
+        )
+        db.session.add(new_client)
+        db.session.commit()
+        return jsonify({'message': 'Client created successfully!'}), 201
 
-#     db.session.commit()
-#     return jsonify({'message': 'Client updated successfully!'}), 200
+    @app.route('/clients/<int:client_id>', methods=['GET'])
+    def get_client(client_id):
+        client = Client.query.get(client_id)
+        if client:
+            return jsonify({
+                'id': client.id,
+                'company_name': client.company_name,
+                'contact_name': client.contact_name,
+                'email': client.email,
+                'phone_number': client.phone_number,
+                'address': client.address
+            }), 200
+        else:
+            return jsonify({'error': 'Client not found'}), 404
 
-# @app.route('/clients/<int:client_id>', methods=['DELETE'])
-# def delete_client(client_id):
-#     client = Client.query.get(client_id)
-#     if not client:
-#         return jsonify({'error': 'Client not found'}), 404
+    @app.route('/clients/<int:client_id>', methods=['PATCH'])
+    def update_client(client_id):
+        client = Client.query.get(client_id)
+        if not client:
+            return jsonify({'error': 'Client not found'}), 404
 
-#     db.session.delete(client)
-#     db.session.commit()
-#     return jsonify({'message': 'Client deleted successfully!'}), 200
+        data = request.get_json()
+        for field in ['company_name', 'contact_name', 'email', 'phone_number', 'address']:
+            if field in data:
+                setattr(client, field, data[field])
+
+        db.session.commit()
+        return jsonify({'message': 'Client updated successfully!'}), 200
+
+    @app.route('/clients/<int:client_id>', methods=['DELETE'])
+    def delete_client(client_id):
+        client = Client.query.get(client_id)
+        if not client:
+            return jsonify({'error': 'Client not found'}), 404
+
+        db.session.delete(client)
+        db.session.commit()
+        return jsonify({'message': 'Client deleted successfully!'}), 200
+
+
+
+    # Employee Routes
+    @app.route('/employees', methods=['GET'])
+    def get_employees():
+        employees = Employee.query.all()
+        return jsonify([{
+            'id': employee.id,
+            'first_name': employee.first_name,
+            'last_name': employee.last_name,
+            'role': employee.role,
+            'email': employee.email,
+            'phone_number': employee.phone_number,
+            'hire_date': employee.hire_date.isoformat(),
+            'salary': employee.salary,
+            'project_id': employee.project_id
+        } for employee in employees]), 200
+
+    @app.route('/employees', methods=['POST'])
+    def create_employee():
+        data = request.get_json()
+        required_fields = ['first_name', 'last_name', 'role', 'email', 'hire_date', 'salary', 'project_id']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': 'Missing fields'}), 400
+
+        new_employee = Employee(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            role=data['role'],
+            email=data['email'],
+            phone_number=data.get('phone_number'),
+            hire_date=data['hire_date'],  # Ensure this is a date object
+            salary=data['salary'],
+            project_id=data['project_id']
+        )
+        db.session.add(new_employee)
+        db.session.commit()
+        return jsonify({'message': 'Employee created successfully!'}), 201
+
+    @app.route('/employees/<int:employee_id>', methods=['GET'])
+    def get_employee(employee_id):
+        employee = Employee.query.get(employee_id)
+        if employee:
+            return jsonify({
+                'id': employee.id,
+                'first_name': employee.first_name,
+                'last_name': employee.last_name,
+                'role': employee.role,
+                'email': employee.email,
+                'phone_number': employee.phone_number,
+                'hire_date': employee.hire_date.isoformat(),
+                'salary': employee.salary,
+                'project_id': employee.project_id
+            }), 200
+        else:
+            return jsonify({'error': 'Employee not found'}), 404
+
+    @app.route('/employees/<int:employee_id>', methods=['PATCH'])
+    def update_employee(employee_id):
+        employee = Employee.query.get(employee_id)
+        if not employee:
+            return jsonify({'error': 'Employee not found'}), 404
+
+        data = request.get_json()
+        for field in ['first_name', 'last_name', 'role', 'email', 'phone_number', 'hire_date', 'salary', 'project_id']:
+            if field in data:
+                setattr(employee, field, data[field])
+
+        db.session.commit()
+        return jsonify({'message': 'Employee updated successfully!'}), 200
+
+    @app.route('/employees/<int:employee_id>', methods=['DELETE'])
+    def delete_employee(employee_id):
+        employee = Employee.query.get(employee_id)
+        if not employee:
+            return jsonify({'error': 'Employee not found'}), 404
+
+        db.session.delete(employee)
+        db.session.commit()
+        return jsonify({'message': 'Employee deleted successfully!'}), 200
 
 
 

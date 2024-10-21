@@ -9,23 +9,42 @@ app = create_app()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
+# def create_users():
+#     """Add predefined user data (12 users)."""
+#     users = [
+#         User(name='John Doe', email='john.doe@email.com', password='password123', role='Project Manager', phone_number='+254701234567'),
+#         User(name='Jane Smith', email='jane.smith@email.com', password='password456', role='Site Engineer', phone_number='+254712345678'),
+#         User(name='Mike Johnson', email='mike.johnson@email.com', password='password789', role='Foreman', phone_number='+254723456789'),
+#         User(name='Emily Davis', email='emily.davis@email.com', password='password101', role='Architect', phone_number='+254734567890'),
+#         User(name='Chris Brown', email='chris.brown@email.com', password='password202', role='Civil Engineer', phone_number='+254745678901'),
+#         User(name='Alice White', email='alice.white@email.com', password='password303', role='Construction Worker', phone_number='+254756789012'),
+#         User(name='Bob Green', email='bob.green@email.com', password='password404', role='Surveyor', phone_number='+254767890123'),
+#         User(name='Charlie Blue', email='charlie.blue@email.com', password='password505', role='Mechanical Engineer', phone_number='+254778901234'),
+#         User(name='Diana Red', email='diana.red@email.com', password='password606', role='Electrical Engineer', phone_number='+254789012345'),
+#         User(name='Edward Black', email='edward.black@email.com', password='password707', role='Plumber', phone_number='+254790123456'),
+#         User(name='Fiona Silver', email='fiona.silver@email.com', password='password808', role='Carpenter', phone_number='+254801234567'),
+#         User(name='George Gold', email='george.gold@email.com', password='password909', role='Safety Officer', phone_number='+254812345678')
+#     ]
+#     return users
+
 def create_users():
     """Add predefined user data (12 users)."""
     users = [
-        User(name='John Doe', email='john.doe@email.com', password='password123', role='Project Manager', phone_number='+254701234567'),
-        User(name='Jane Smith', email='jane.smith@email.com', password='password456', role='Site Engineer', phone_number='+254712345678'),
-        User(name='Mike Johnson', email='mike.johnson@email.com', password='password789', role='Foreman', phone_number='+254723456789'),
-        User(name='Emily Davis', email='emily.davis@email.com', password='password101', role='Architect', phone_number='+254734567890'),
-        User(name='Chris Brown', email='chris.brown@email.com', password='password202', role='Civil Engineer', phone_number='+254745678901'),
-        User(name='Alice White', email='alice.white@email.com', password='password303', role='Construction Worker', phone_number='+254756789012'),
-        User(name='Bob Green', email='bob.green@email.com', password='password404', role='Surveyor', phone_number='+254767890123'),
-        User(name='Charlie Blue', email='charlie.blue@email.com', password='password505', role='Mechanical Engineer', phone_number='+254778901234'),
-        User(name='Diana Red', email='diana.red@email.com', password='password606', role='Electrical Engineer', phone_number='+254789012345'),
-        User(name='Edward Black', email='edward.black@email.com', password='password707', role='Plumber', phone_number='+254790123456'),
-        User(name='Fiona Silver', email='fiona.silver@email.com', password='password808', role='Carpenter', phone_number='+254801234567'),
-        User(name='George Gold', email='george.gold@email.com', password='password909', role='Safety Officer', phone_number='+254812345678')
+        User(first_name='John', last_name='Doe', email='john.doe@email.com', password='password123', role='Project Manager', phone_number='+254701234567'),
+        User(first_name='Jane', last_name='Smith', email='jane.smith@email.com', password='password456', role='Site Engineer', phone_number='+254712345678'),
+        User(first_name='Mike', last_name='Johnson', email='mike.johnson@email.com', password='password789', role='Foreman', phone_number='+254723456789'),
+        User(first_name='Emily', last_name='Davis', email='emily.davis@email.com', password='password101', role='Architect', phone_number='+254734567890'),
+        User(first_name='Chris', last_name='Brown', email='chris.brown@email.com', password='password202', role='Civil Engineer', phone_number='+254745678901'),
+        User(first_name='Alice', last_name='White', email='alice.white@email.com', password='password303', role='Construction Worker', phone_number='+254756789012'),
+        User(first_name='Bob', last_name='Green', email='bob.green@email.com', password='password404', role='Surveyor', phone_number='+254767890123'),
+        User(first_name='Charlie', last_name='Blue', email='charlie.blue@email.com', password='password505', role='Mechanical Engineer', phone_number='+254778901234'),
+        User(first_name='Diana', last_name='Red', email='diana.red@email.com', password='password606', role='Electrical Engineer', phone_number='+254789012345'),
+        User(first_name='Edward', last_name='Black', email='edward.black@email.com', password='password707', role='Plumber', phone_number='+254790123456'),
+        User(first_name='Fiona', last_name='Silver', email='fiona.silver@email.com', password='password808', role='Carpenter', phone_number='+254801234567'),
+        User(first_name='George', last_name='Gold', email='george.gold@email.com', password='password909', role='Safety Officer', phone_number='+254812345678')
     ]
     return users
+
 
 def create_clients():
     """Add predefined client data (12 clients)."""
@@ -45,21 +64,21 @@ def create_clients():
     ]
     return clients
 
-def create_projects(client_ids):
+def create_projects(client_ids, user_ids):
     """Add predefined project data (12 construction projects)."""
     projects = [
-    Project(name='Skyscraper Construction', client_id=client_ids[0], start_date=date(2023, 1, 1), end_date=date(2025, 6, 1), budget=50000000, status='In Progress'),
-    Project(name='Mountain Retreat Housing', client_id=client_ids[1], start_date=date(2023, 2, 1), end_date=date(2024, 12, 1), budget=30000000, status='In Progress'),
-    Project(name='Urban Office Complex', client_id=client_ids[2], start_date=date(2023, 3, 1), end_date=date(2024, 9, 1), budget=20000000, status='In Progress'),
-    Project(name='Green Building Project', client_id=client_ids[3], start_date=date(2023, 4, 1), end_date=date(2025, 10, 3), budget=15000000, status='In Progress'),
-    Project(name='Steel Warehouse', client_id=client_ids[4], start_date=date(2023, 5, 1), end_date=date(2023, 12, 1), budget=10000000, status='Completed'),
-    Project(name='Concrete Bridge Construction', client_id=client_ids[5], start_date=date(2023, 6, 1), end_date=date(2026, 4, 1), budget=25000000, status='In Progress'),
-    Project(name='Residential Housing Complex', client_id=client_ids[6], start_date=date(2023, 7, 1), end_date=date(2025, 1, 1), budget=60000000, status='In Progress'),
-    Project(name='Heavy Machinery Depot', client_id=client_ids[7], start_date=date(2023, 8, 1), end_date=date(2050, 11, 6), budget=40000000, status='Planned'),
-    Project(name='Foundation Strengthening', client_id=client_ids[8], start_date=date(2023, 9, 1), end_date=date(2026, 4, 12), budget=5000000, status='In Progress'),
-    Project(name='Luxury Apartment Towers', client_id=client_ids[9], start_date=date(2023, 10, 1), end_date=date(2024, 8, 1), budget=80000000, status='In Progress'),
-    Project(name='Real Estate Development', client_id=client_ids[10], start_date=date(2023, 11, 1), end_date=date(2030, 10, 3), budget=50000000, status='In Progress'),
-    Project(name='Office Renovation', client_id=client_ids[11], start_date=date(2023, 12, 1), end_date=date(2022, 12, 8), budget=10000000, status='Planned')
+    Project(name='Skyscraper Construction', client_id=client_ids[0], user_id=user_ids[4] ,start_date=date(2023, 1, 1), end_date=date(2025, 6, 1), budget=50000000, status='In Progress'),
+    Project(name='Mountain Retreat Housing', client_id=client_ids[1],user_id=user_ids[1] , start_date=date(2023, 2, 1), end_date=date(2024, 12, 1), budget=30000000, status='In Progress'),
+    Project(name='Urban Office Complex', client_id=client_ids[2], user_id=user_ids[8] ,start_date=date(2023, 3, 1), end_date=date(2024, 9, 1), budget=20000000, status='In Progress'),
+    Project(name='Green Building Project', client_id=client_ids[3],user_id=user_ids[7] , start_date=date(2023, 4, 1), end_date=date(2025, 10, 3), budget=15000000, status='In Progress'),
+    Project(name='Steel Warehouse', client_id=client_ids[4],user_id=user_ids[2] , start_date=date(2023, 5, 1), end_date=date(2023, 12, 1), budget=10000000, status='Completed'),
+    Project(name='Concrete Bridge Construction', client_id=client_ids[5],user_id=user_ids[9] , start_date=date(2023, 6, 1), end_date=date(2026, 4, 1), budget=25000000, status='In Progress'),
+    Project(name='Residential Housing Complex', client_id=client_ids[6], user_id=user_ids[4] ,start_date=date(2023, 7, 1), end_date=date(2025, 1, 1), budget=60000000, status='In Progress'),
+    Project(name='Heavy Machinery Depot', client_id=client_ids[7],user_id=user_ids[6] , start_date=date(2023, 8, 1), end_date=date(2050, 11, 6), budget=40000000, status='Planned'),
+    Project(name='Foundation Strengthening', client_id=client_ids[8],user_id=user_ids[8] , start_date=date(2023, 9, 1), end_date=date(2026, 4, 12), budget=5000000, status='In Progress'),
+    Project(name='Luxury Apartment Towers', client_id=client_ids[9], user_id=user_ids[1] ,start_date=date(2023, 10, 1), end_date=date(2024, 8, 1), budget=80000000, status='In Progress'),
+    Project(name='Real Estate Development', client_id=client_ids[10],user_id=user_ids[2] , start_date=date(2023, 11, 1), end_date=date(2030, 10, 3), budget=50000000, status='In Progress'),
+    Project(name='Office Renovation', client_id=client_ids[11],user_id=user_ids[3] , start_date=date(2023, 12, 1), end_date=date(2022, 12, 8), budget=10000000, status='Planned')
 ]
 
     return projects
@@ -119,7 +138,61 @@ def create_equipments(project_ids):
     return equipments
 
 
+# with app.app_context():
+
+#         # Clear existing data
+#     db.drop_all()  # Drops all tables
+#     db.create_all()  # Recreate tables
+#     logging.info("Database cleared and tables created.")
+
+#     # Add users
+#     users = create_users()
+#     db.session.add_all(users)
+#     db.session.commit()
+#     logging.info("Users added.")
+
+#     # Add clients
+#     clients = create_clients()
+#     db.session.add_all(clients)
+#     db.session.commit()
+#     logging.info("Clients added.")
+
+#     # Get client IDs
+#     client_ids = [client.id for client in clients]
+
+#     # Add projects
+#     projects = create_projects(client_ids)
+#     db.session.add_all(projects)
+#     db.session.commit()
+#     logging.info("Projects added.")
+
+#     # Get project IDs
+#     project_ids = [project.id for project in projects]
+
+#     # Add employees
+#     employees = create_employees(project_ids)
+#     db.session.add_all(employees)
+#     db.session.commit()
+#     logging.info("Employees added.")
+
+#     # Add materials
+#     materials = create_materials(project_ids)
+#     db.session.add_all(materials)
+#     db.session.commit()
+#     logging.info("Materials added.")
+
+#     # Add equipment
+#     equipments = create_equipments(project_ids)
+#     db.session.add_all(equipments)
+#     db.session.commit()
+#     logging.info("Equipment added.")
+
 with app.app_context():
+    # Clear existing data
+    db.drop_all()  # Drops all tables
+    db.create_all()  # Recreate tables
+    logging.info("Database cleared and tables created.")
+
     # Add users
     users = create_users()
     db.session.add_all(users)
@@ -135,8 +208,11 @@ with app.app_context():
     # Get client IDs
     client_ids = [client.id for client in clients]
 
+    # Get user IDs
+    user_ids = [user.id for user in users]
+
     # Add projects
-    projects = create_projects(client_ids)
+    projects = create_projects(client_ids, user_ids)
     db.session.add_all(projects)
     db.session.commit()
     logging.info("Projects added.")
