@@ -67,10 +67,10 @@ class Project(db.Model):
 class Material(db.Model):
     __tablename__ = 'materials'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    unit = db.Column(db.String(50), nullable=False)
-    unit_price = db.Column(db.Float, nullable=False)
-    quantity = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(100), nullable=True)
+    unit = db.Column(db.String(50), nullable=True)
+    unit_price = db.Column(db.Float, nullable=True)
+    quantity = db.Column(db.Float, nullable=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
     def __repr__(self):
