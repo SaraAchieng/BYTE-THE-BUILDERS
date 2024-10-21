@@ -1,24 +1,25 @@
 /* Shared Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #1e1b1b;
   margin: 0;
   padding: 20px;
 }
 
 header {
-  background: #007bff;
-  color: white;
+  background: #343333;
+  color: rgb(219, 141, 39);
   padding: 10px 20px;
   text-align: center;
 }
+
 
 nav {
   margin: 10px 0;
 }
 
 nav a {
-  color: white;
+  color: rgb(50, 182, 206);
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
@@ -47,15 +48,15 @@ input {
 button {
   padding: 10px 15px;
   margin: 5px;
-  background-color: #28a745;
-  color: white;
+  background-color: #146828;
+  color: rgb(247, 244, 239);
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #218838;
+  background-color: #1dca43;
 }
 
 ul {
@@ -74,18 +75,18 @@ li {
 }
 
 li button {
-  background-color: #dc3545;
+  background-color: #1d1e1c;
 }
 
 li button:hover {
-  background-color: #c82333;
+  background-color: #23b121;
 }
 
 /* Additional Styles from Kent Branch */
 
 /* Footer */
 .footer {
-  background-color: #333;
+  background-color: #3a3636;
   color: white;
   padding: 1rem;
   text-align: center;
@@ -94,11 +95,11 @@ li button:hover {
 .footer .social-icons a {
   margin: 0 1rem;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
 }
 
 .footer .social-icons a:hover {
-  color: #FFA500;
+  color: #29f700;
 }
 
 /* Home */
@@ -151,8 +152,8 @@ li button:hover {
 
 .login-btn {
   width: 100%;
-  background-color: #FFA500;
-  color: white;
+  background-color: #fffdf8;
+  color: rgb(208, 133, 13);
   padding: 0.75rem;
   border: none;
   border-radius: 4px;
@@ -161,7 +162,8 @@ li button:hover {
 }
 
 .login-btn:hover {
-  background-color: #FFD700;
+  background-color: #00e5ff;
+  color: rgb(0, 0, 0);
 }
 
 /* Navbar */
@@ -190,13 +192,13 @@ li button:hover {
 }
 
 .navbar-links a {
-  color: #fcfffc;
+  color: #d99426;
   font-size: 1.1rem;
   text-decoration: none;
 }
 
 .navbar-links a:hover {
-  color: #FFD700;
+  color: #b9921c;
 }
 
 /* Project Details */
@@ -236,7 +238,7 @@ li button:hover {
 
 .project-slider {
   display: flex;
-  animation: slide 70s linear infinite;
+  animation: slide 50s linear infinite;
 }
 
 .project-card {

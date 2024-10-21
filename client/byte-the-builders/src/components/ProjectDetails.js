@@ -40,8 +40,86 @@ const projects = [
     employees: ['Tom Otieno', 'Emma Nduta'], 
     engineer: 'Steven Wambugu', 
     link: 'https://example.com/mkuti-house'
+  },
+  { 
+    id: 4, 
+    title: 'Kilifi Beach House', 
+    imageUrl: 'https://i.pinimg.com/736x/22/14/ad/2214ad39fdb5bb5438c5f02e6adb0f40.jpg', 
+    details: 'A beach house overlooking the Indian Ocean.', 
+    cost: 'KES 120,000,000', 
+    startDate: '2021-12-01', 
+    endDate: '2022-12-01', 
+    location: 'Kilifi', 
+    employees: ['Mwangi Kinyua', 'Grace Atieno'], 
+    engineer: 'Paul Kimani', 
+    link: 'https://example.com/kilifi-beach-house'
+  },
+  { 
+    id: 5, 
+    title: 'Ngong Mansion', 
+    imageUrl: 'https://i.pinimg.com/564x/09/80/37/098037612d8e0868813461e12d092221.jpg', 
+    details: 'A luxurious mansion near Ngong Hills.', 
+    cost: 'KES 200,000,000', 
+    startDate: '2020-06-01', 
+    endDate: '2021-06-01', 
+    location: 'Ngong', 
+    employees: ['Simon Njoroge', 'Ruth Achieng'], 
+    engineer: 'Lilian Waweru', 
+    link: 'https://example.com/ngong-mansion'
+  },
+  { 
+    id: 6, 
+    title: 'Karen Villa', 
+    imageUrl: 'https://i.pinimg.com/enabled_lo/564x/87/ec/af/87ecafefac46025e3d7863cdda603e36.jpg', 
+    details: 'A modern villa in the lush suburb of Karen.', 
+    cost: 'KES 95,000,000', 
+    startDate: '2021-08-15', 
+    endDate: '2022-08-15', 
+    location: 'Karen, Nairobi', 
+    employees: ['James Ochieng', 'Winnie Njeri'], 
+    engineer: 'Daniel Mwangi', 
+    link: 'https://example.com/karen-villa'
+  },
+  { 
+    id: 7, 
+    title: 'Mombasa Penthouse', 
+    imageUrl: 'https://i.pinimg.com/564x/bd/08/aa/bd08aa5ab9e44f4cbb2a98aa95b61a72.jpg', 
+    details: 'A penthouse with a view of the Indian Ocean.', 
+    cost: 'KES 150,000,000', 
+    startDate: '2023-01-10', 
+    endDate: '2023-09-15', 
+    location: 'Nyali, Mombasa', 
+    employees: ['Dennis Kimathi', 'Elizabeth Wawira'], 
+    engineer: 'Brian Mwangi', 
+    link: 'https://example.com/mombasa-penthouse'
+  },
+  { 
+    id: 8, 
+    title: 'Thika Family Home', 
+    imageUrl: 'https://i.pinimg.com/564x/84/55/44/84554450d307225bb5c0af6c854c95d8.jpg', 
+    details: 'A spacious family home in Thika.', 
+    cost: 'KES 45,000,000', 
+    startDate: '2022-02-01', 
+    endDate: '2022-10-31', 
+    location: 'Thika', 
+    employees: ['George Kariuki', 'Mary Wambui'], 
+    engineer: 'Isaac Muriuki', 
+    link: 'https://example.com/thika-family-home'
+  },
+  { 
+    id: 9, 
+    title: 'Nairobi Loft', 
+    imageUrl: 'https://i.pinimg.com/564x/2f/84/af/2f84af5eb2ca3d8fa9875f5b2245ed9f.jpg', 
+    details: 'A modern loft in the city center.', 
+    cost: 'KES 80,000,000', 
+    startDate: '2021-09-01', 
+    endDate: '2022-06-01', 
+    location: 'Westlands, Nairobi', 
+    employees: ['Patrick Waweru', 'Esther Auma'], 
+    engineer: 'Catherine Mutua', 
+    link: 'https://example.com/nairobi-loft'
   }
-  // Add other project objects here if needed...
+  
 ];
 
 const ProjectDetails = () => {
@@ -64,9 +142,9 @@ const ProjectDetails = () => {
       <p><strong>Employees Involved:</strong> {project.employees.join(', ')}</p>
       <p><strong>Structural Engineer:</strong> {project.engineer}</p>
       {/* View More button linking to external site */}
-      <a href={project.link} target="_blank" rel="noopener noreferrer">
+      {/* <a href={project.link} target="_blank" rel="noopener noreferrer">
         <button className="view-btn">View More</button>
-      </a>
+      </a> */}
     </div>
   );
 };
