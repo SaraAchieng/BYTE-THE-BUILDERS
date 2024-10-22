@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 
 function Materials() {
   const [materials, setMaterials] = useState([]);
   const [materialData, setMaterialData] = useState({
     name: '',
     id: '',
-    unit: '',
     unit_price: '',
     quantity: '',
   });
-  const [isUpdating, setIsUpdating] = useState(false); // Track update mode
-  const [currentMaterialId, setCurrentMaterialId] = useState(null); // Track the material being updated
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [currentMaterialId, setCurrentMaterialId] = useState(null);
+
+  // Fetch materials from the backend
+  const fetchMaterials = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/materials'); // Adjust the API endpoint as necessary
+      const data = await response.json();
+      setMaterials(data);
+    } catch (error) {
+      console.error("Error fetching materials:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMaterials();
+  }, []);
 
   // Handle input changes
   function handleChange(e) {
@@ -19,14 +35,33 @@ function Materials() {
   }
 
   // Add a new material
-  function addMaterial() {
-    setMaterials([...materials, materialData]);
-    setMaterialData({ name: '', id: '', unit: '', unit_price: '', quantity: '' });
+  async function addMaterial() {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/materials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(materialData),
+      });
+      const newMaterial = await response.json();
+      setMaterials([...materials, newMaterial]);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding material:", error);
+    }
   }
 
   // Delete a material
-  function deleteMaterial(id) {
-    setMaterials(materials.filter(material => material.id !== id));
+  async function deleteMaterial(id) {
+    try {
+      await fetch(`http://127.0.0.1:5000/materials/${id}`, {
+        method: 'DELETE',
+      });
+      setMaterials(materials.filter(material => material.id !== id));
+    } catch (error) {
+      console.error("Error deleting material:", error);
+    }
   }
 
   // Prepare to update a material
@@ -38,17 +73,32 @@ function Materials() {
   }
 
   // Handle the update process
-  function handleUpdate() {
-    setMaterials(materials.map(material =>
-      material.id === currentMaterialId ? { ...material, ...materialData } : material
-    ));
-    setIsUpdating(false); // Exit update mode
-    setMaterialData({  name: '', id: '', unit: '', unit_price: '', quantity: '' }); // Clear form
+  async function handleUpdate() {
+    try {
+      await fetch(`http://127.0.0.1:5000/materials/${currentMaterialId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(materialData),
+      });
+
+      // Re-fetch materials from the backend to ensure frontend sync
+      fetchMaterials();
+      resetForm();
+    } catch (error) {
+      console.error("Error updating material:", error);
+    }
   }
+
+  const resetForm = () => {
+    setIsUpdating(false);
+    setCurrentMaterialId(null);
+    setMaterialData({ name: '', id: '', unit_price: '', quantity: '' });
+  };
 
   return (
     <div>
-      {/* Form for adding or updating materials */}
       <h2>{isUpdating ? "Update Material" : "Add Material"}</h2>
       <input
         type="text"
@@ -67,13 +117,6 @@ function Materials() {
       />
       <input
         type="text"
-        name="unit"
-        placeholder="Unit"
-        value={materialData.unit}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
         name="unit_price"
         placeholder="Unit Price"
         value={materialData.unit_price}
@@ -87,21 +130,17 @@ function Materials() {
         onChange={handleChange}
       />
 
-
-      {/* Conditionally render the 'Add' or 'OK' button */}
       {isUpdating ? (
         <button onClick={handleUpdate}>OK</button> // OK button for updating
       ) : (
         <button onClick={addMaterial}>Add Material</button> // Add Material button
       )}
 
-      {/* List of materials */}
       <ul>
         {materials.map(material => (
           <li key={material.id}>
             <strong>Name:</strong> {material.name} <br />
             <strong>ID:</strong> {material.id} <br />
-            <strong>Unit:</strong> {material.unit} <br />
             <strong>Unit Price:</strong> {material.unit_price} <br />
             <strong>Quantity:</strong> {material.quantity} <br />
             <button onClick={() => deleteMaterial(material.id)}>Delete</button>
