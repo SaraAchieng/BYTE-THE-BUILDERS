@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [employeeData, setEmployeeData] = useState({
-    id: '',
     first_name: '',
-    last_name:'',
+    last_name: '',
     role: '',
     email: '',
-    phone: '',
+    phone_number: '',
     hire_date: '',
     salary: '',
   });
-  const [isUpdating, setIsUpdating] = useState(false); // Track if update mode is on
-  const [currentEmployeeId, setCurrentEmployeeId] = useState(null); // Track the employee being updated
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [currentEmployeeId, setCurrentEmployeeId] = useState(null);
+
+  // Fetch employees from the backend
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/employees');
+        const data = await response.json();
+        setEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   // Handle input changes
   function handleChange(e) {
@@ -23,44 +39,70 @@ function Employees() {
 
   // Add a new employee
   function addEmployee() {
-    setEmployees([...employees, employeeData]);
-    setEmployeeData({ id: '', first_name: '', last_name: '', role: '', email: '', phone: '', hire_date: '', salary: '' });
-  }
-
-  // Delete an employee
-  function deleteEmployee(id) {
-    setEmployees(employees.filter(employee => employee.id !== id));
+    fetch('http://127.0.0.1:5000/employees', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(employeeData),
+    })
+      .then(response => response.json())
+      .then(newEmployee => {
+        setEmployees([...employees, newEmployee]);
+        resetForm();
+      })
+      .catch(error => console.error("Error adding employee:", error));
   }
 
   // Prepare to update an employee
   function updateEmployee(id) {
-    const employee = employees.find(employee => employee.id === id);
+    const employee = employees.find(emp => emp.id === id);
     setEmployeeData(employee); // Pre-fill the form with the employee's data
     setIsUpdating(true); // Enable update mode
     setCurrentEmployeeId(id); // Set the employee being updated
   }
 
-  // Handle the update process
+  // Handle the update process using PATCH method
   function handleUpdate() {
-    setEmployees(employees.map(employee =>
-      employee.id === currentEmployeeId ? { ...employee, ...employeeData } : employee
-    ));
-    setIsUpdating(false); // Exit update mode
-    setEmployeeData({  id: '', first_name: '', last_name: '', role: '', email: '', phone: '', hire_date: '', salary: '' }); // Clear form
+    fetch(`http://127.0.0.1:5000/employees/${currentEmployeeId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(employeeData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(updatedEmployee => {
+        setEmployees(employees.map(employee =>
+          employee.id === currentEmployeeId ? updatedEmployee : employee
+        ));
+        resetForm();
+      })
+      .catch(error => console.error("Error updating employee:", error));
   }
+
+  const resetForm = () => {
+    setIsUpdating(false);
+    setCurrentEmployeeId(null);
+    setEmployeeData({
+      first_name: '',
+      last_name: '',
+      role: '',
+      email: '',
+      phone_number: '',
+      hire_date: '',
+      salary: '',
+    });
+  };
 
   return (
     <div>
-      {/* Form for adding or updating employees */}
       <h2>{isUpdating ? "Update Employee" : "Add Employee"}</h2>
-      <input
-        type="text"
-        name="id"
-        placeholder="ID"
-        value={employeeData.id}
-        onChange={handleChange}
-        disabled={isUpdating} // ID should not be changed while updating
-      />
       <input
         type="text"
         name="first_name"
@@ -91,15 +133,14 @@ function Employees() {
       />
       <input
         type="tel"
-        name="phone"
+        name="phone_number"
         placeholder="Phone"
-        value={employeeData.phone}
+        value={employeeData.phone_number}
         onChange={handleChange}
       />
       <input
         type="date"
         name="hire_date"
-        placeholder="Hire Date"
         value={employeeData.hire_date}
         onChange={handleChange}
       />
@@ -111,14 +152,12 @@ function Employees() {
         onChange={handleChange}
       />
 
-      {/* Conditionally render the 'Add' or 'OK' button */}
       {isUpdating ? (
         <button onClick={handleUpdate}>OK</button> // OK button for updating
       ) : (
         <button onClick={addEmployee}>Add Employee</button> // Add Employee button
       )}
 
-      {/* List of employees */}
       <ul>
         {employees.map(employee => (
           <li key={employee.id}>
@@ -126,10 +165,9 @@ function Employees() {
             <strong>Last Name:</strong> {employee.last_name} <br />
             <strong>Role:</strong> {employee.role} <br />
             <strong>Email:</strong> {employee.email} <br />
-            <strong>Phone:</strong> {employee.phone} <br />
+            <strong>Phone Number:</strong> {employee.phone_number} <br />
             <strong>Hire Date:</strong> {employee.hire_date} <br />
             <strong>Salary:</strong> {employee.salary} <br />
-            <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
             <button onClick={() => updateEmployee(employee.id)}>Update</button>
           </li>
         ))}
@@ -139,3 +177,5 @@ function Employees() {
 }
 
 export default Employees;
+
+
