@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+
+
+
+import React, { useState, useEffect } from 'react';
 
 function Equipment() {
   const [equipment, setEquipment] = useState([]);
@@ -11,8 +14,26 @@ function Equipment() {
     quantity: '',
     status: '',
   });
-  const [isUpdating, setIsUpdating] = useState(false); // Track update mode
-  const [currentEquipmentId, setCurrentEquipmentId] = useState(null); // Track the equipment being updated
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [currentEquipmentId, setCurrentEquipmentId] = useState(null);
+
+  // Fetch equipment data from the backend
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/equipments');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setEquipment(data);
+      } catch (error) {
+        console.error("Error fetching equipment:", error);
+      }
+    };
+
+    fetchEquipment();
+  }, []);
 
   // Handle input changes
   function handleChange(e) {
@@ -21,36 +42,72 @@ function Equipment() {
   }
 
   // Add new equipment
-  function addEquipment() {
-    setEquipment([...equipment, equipmentData]);
-    setEquipmentData({ id: '', name: '', purchase_date: '', cost: '', maintenance_date: '', quantity: '', status: '' });
+  async function addEquipment() {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/equipments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(equipmentData),
+      });
+      const newEquipment = await response.json();
+      setEquipment([...equipment, newEquipment]);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding equipment:", error);
+    }
   }
 
   // Delete equipment
-  function deleteEquipment(id) {
-    setEquipment(equipment.filter(item => item.id !== id));
+  async function deleteEquipment(id) {
+    try {
+      await fetch(`http://127.0.0.1:5000/equipments/${id}`, {
+        method: 'DELETE',
+      });
+      setEquipment(equipment.filter(item => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting equipment:", error);
+    }
   }
 
   // Prepare to update equipment
   function updateEquipment(id) {
     const item = equipment.find(item => item.id === id);
-    setEquipmentData(item); // Pre-fill the form with the equipment's data
-    setIsUpdating(true); // Enable update mode
-    setCurrentEquipmentId(id); // Set the equipment being updated
+    setEquipmentData(item);
+    setIsUpdating(true);
+    setCurrentEquipmentId(id);
   }
 
   // Handle update process
-  function handleUpdate() {
-    setEquipment(equipment.map(item =>
-      item.id === currentEquipmentId ? { ...item, ...equipmentData } : item
-    ));
-    setIsUpdating(false); // Exit update mode
-    setEquipmentData({ id: '', name: '', purchase_date: '', cost: '', maintenance_date: '', quantity: '', status: '' }); // Clear form
+  async function handleUpdate() {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/equipments/${currentEquipmentId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(equipmentData),
+      });
+      const updatedEquipment = await response.json();
+      setEquipment(equipment.map(item =>
+        item.id === currentEquipmentId ? updatedEquipment : item
+      ));
+      resetForm();
+    } catch (error) {
+      console.error("Error updating equipment:", error);
+    }
   }
+
+  // Reset the form
+  const resetForm = () => {
+    setIsUpdating(false);
+    setCurrentEquipmentId(null);
+    setEquipmentData({ id: '', name: '', purchase_date: '', cost: '', maintenance_date: '', quantity: '', status: '' });
+  };
 
   return (
     <div>
-      {/* Form for adding or updating equipment */}
       <h2>{isUpdating ? "Update Equipment" : "Add Equipment"}</h2>
       <input
         type="text"
@@ -70,7 +127,6 @@ function Equipment() {
       <input
         type="date"
         name="purchase_date"
-        placeholder="Purchase Date"
         value={equipmentData.purchase_date}
         onChange={handleChange}
       />
@@ -84,7 +140,6 @@ function Equipment() {
       <input
         type="date"
         name="maintenance_date"
-        placeholder="Maintenance Date"
         value={equipmentData.maintenance_date}
         onChange={handleChange}
       />
@@ -103,11 +158,10 @@ function Equipment() {
         onChange={handleChange}
       />
 
-      {/* Conditionally render the 'Add' or 'OK' button */}
       {isUpdating ? (
-        <button onClick={handleUpdate}>OK</button> // OK button for updating
+        <button onClick={handleUpdate}>OK</button>
       ) : (
-        <button onClick={addEquipment}>Add Equipment</button> // Add Equipment button
+        <button onClick={addEquipment}>Add Equipment</button>
       )}
 
       {/* List of equipment */}
@@ -131,3 +185,4 @@ function Equipment() {
 }
 
 export default Equipment;
+

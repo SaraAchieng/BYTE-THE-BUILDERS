@@ -1,69 +1,114 @@
-import React, { useState } from 'react';
+
+
+import React, { useState, useEffect } from 'react';
 
 function Clients() {
   const [clients, setClients] = useState([]);
   const [clientData, setClientData] = useState({
-    name: '',
-    id: '',
-    companyName: '',
+    company_name: '',
+    contact_name: '',
     email: '',
-    phone: '',
+    phone_number: '',
   });
-  const [isUpdating, setIsUpdating] = useState(false); // Track if update mode is on
-  const [currentClientId, setCurrentClientId] = useState(null); // Track the client being updated
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [currentClientId, setCurrentClientId] = useState(null);
 
-  function handleChange(e) {
+  // Fetch clients from the backend
+  const fetchClients = () => {
+    fetch('http://127.0.0.1:5000/clients')
+      .then(response => response.json())
+      .then(data => {
+        setClients(data);
+        console.log("Fetched clients:", data);  // Debugging line
+      })
+      .catch(error => console.error("Error fetching clients:", error));
+  };
+
+  useEffect(() => {
+    fetchClients();  // Initial fetch on component mount
+  }, []);
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setClientData({ ...clientData, [name]: value });
-  }
+  };
 
-  function addClient() {
-    setClients([...clients, clientData]);
-    setClientData({ name: '', id: '', companyName: '', email: '', phone: '' });
-  }
+  const addClient = () => {
+    fetch('http://127.0.0.1:5000/clients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(clientData),
+    })
+      .then(response => response.json())
+      .then(newClient => {
+        setClients([...clients, newClient]);
+        resetForm();
+        fetchClients();  // Refetch after adding
+      })
+      .catch(error => console.error("Error adding client:", error));
+  };
 
-  function deleteClient(id) {
-    setClients(clients.filter(client => client.id !== id));
-  }
+  const updateClient = () => {
+    console.log('Current Client ID:', currentClientId);
+    console.log('Client Data:', clientData);
+    
+    fetch(`http://127.0.0.1:5000/clients/${currentClientId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(clientData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(updatedClient => {
+        console.log('Updated client:', updatedClient);
+        
+        // Update the clients state properly
+        setClients(prevClients =>
+          prevClients.map(client =>
+            client.id === currentClientId ? updatedClient : client
+          )
+        );
+        
+        resetForm();
+        fetchClients();  // Refetch after updating
+      })
+      .catch(error => console.error("Error updating client:", error));
+  };
 
-  function updateClient(id) {
-    const client = clients.find(client => client.id === id);
-    setClientData(client); // Pre-fill the form with the client's data
-    setIsUpdating(true); // Enable update mode
-    setCurrentClientId(id); // Set the client being updated
-  }
-
-  function handleUpdate() {
-    setClients(clients.map(client =>
-      client.id === currentClientId ? { ...client, ...clientData } : client
-    ));
-    setIsUpdating(false); // Turn off update mode
-    setClientData({ name: '', id: '', companyName: '', email: '', phone: '' }); // Clear form
-  }
+  const resetForm = () => {
+    setIsUpdating(false);
+    setCurrentClientId(null);
+    setClientData({
+      company_name: '',
+      contact_name: '',
+      email: '',
+      phone_number: '',
+    });
+  };
 
   return (
     <div>
-      {/* Form for adding or updating clients */}
       <h2>{isUpdating ? "Update Client" : "Add Client"}</h2>
       <input
         type="text"
-        name="name"
-        placeholder="Name"
-        value={clientData.name}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="id"
-        placeholder="ID"
-        value={clientData.id}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="companyName"
+        name="company_name"
         placeholder="Company Name"
-        value={clientData.companyName}
+        value={clientData.company_name}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="contact_name"
+        placeholder="Contact Name"
+        value={clientData.contact_name}
         onChange={handleChange}
       />
       <input
@@ -75,30 +120,36 @@ function Clients() {
       />
       <input
         type="tel"
-        name="phone"
-        placeholder="Phone"
-        value={clientData.phone}
+        name="phone_number"
+        placeholder="Phone Number"
+        value={clientData.phone_number}
         onChange={handleChange}
       />
       
-      {/* Conditionally render the 'Add' or 'OK' button */}
       {isUpdating ? (
-        <button onClick={handleUpdate}>OK</button> // OK button for updating
+        <button onClick={updateClient}>Update Client</button>
       ) : (
-        <button onClick={addClient}>Add Client</button> // Add Client button
+        <button onClick={addClient}>Add Client</button>
       )}
 
-      {/* List of clients */}
       <ul>
         {clients.map(client => (
           <li key={client.id}>
-            <strong>Name:</strong> {client.name} <br />
+            <strong>Company Name:</strong> {client.company_name} <br />
             <strong>ID:</strong> {client.id} <br />
-            <strong>Company:</strong> {client.companyName} <br />
+            <strong>Contact Name:</strong> {client.contact_name} <br />
             <strong>Email:</strong> {client.email} <br />
-            <strong>Phone:</strong> {client.phone} <br />
-            <button onClick={() => deleteClient(client.id)}>Delete</button>
-            <button onClick={() => updateClient(client.id)}>Update</button>
+            <strong>Phone Number:</strong> {client.phone_number} <br />
+            <button onClick={() => {
+              setClientData({
+                company_name: client.company_name,
+                contact_name: client.contact_name,
+                email: client.email,
+                phone_number: client.phone_number,
+              });
+              setIsUpdating(true);
+              setCurrentClientId(client.id);
+            }}>Update</button>
           </li>
         ))}
       </ul>
