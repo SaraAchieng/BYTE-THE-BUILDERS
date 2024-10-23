@@ -25,8 +25,8 @@ function App() {
             <Link to="/employees">Employees</Link>
             <Link to="/materials">Materials</Link>
             <Link to="/equipment">Equipment</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            {/* <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link> */}
           </nav>
 
           <Routes>
