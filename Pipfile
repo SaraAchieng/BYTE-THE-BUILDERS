@@ -6,6 +6,11 @@ name = "pypi"
 [packages]
 flask-migrate = "*"
 flask-sqlalchemy = "*"
+flask = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+sqlalchemy-serializer = "*"
+flask-restful = "*"
 
 [dev-packages]
 
